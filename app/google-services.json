@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "276385472364",
+    "firebase_url": "https://pam-project-akhir-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "pam-project-akhir",
+    "storage_bucket": "pam-project-akhir.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276385472364:android:55c713bc735acb361c9d49",
+        "android_client_info": {
+          "package_name": "com.example.project_akhir_pam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276385472364-gqlq3nfck27l4ac10bdbfq4fdegce4sm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.project_akhir_pam",
+            "certificate_hash": "add0dff604da61ce7b87ff2c247ddbf8e82284a7"
+          }
+        },
+        {
+          "client_id": "276385472364-0trkdd5bvl685v0267dafkf5d6jb79qe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp9aLtKExK3e13C2dNOQQ24PXyhlzkE7Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276385472364-0trkdd5bvl685v0267dafkf5d6jb79qe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
