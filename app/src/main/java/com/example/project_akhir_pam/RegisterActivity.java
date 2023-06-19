@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etEmail = findViewById(R.id.et_Email);
         etPassword = findViewById(R.id.et_Password);
         etUsername = findViewById(R.id.et_Username);
-        etCity = findViewById(R.id.et_Username);
+        etCity = findViewById(R.id.et_City);
         etPhoneNumber = findViewById(R.id.et_PhoneNumber);
 
         btnSignUp = findViewById(R.id.btn_SignUp);
@@ -74,6 +74,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onSuccess(Void unused) {
                 System.out.println("Masuk nih data profilenyaaaaa");
+                FirebaseUser user = mAuth.getCurrentUser();
+                updateUI(user);
                 Toast.makeText(RegisterActivity.this, "Add data",
                         Toast.LENGTH_SHORT).show();
             }

@@ -11,4 +11,9 @@
     <color name="blue_light">#60F1FF</color>
     <color name="drak_blue">#1A78D3</color>
 
+    <color name="card_rs">#EFFFFD</color>
+
+    <color name="gradient_1">#B8FFF9</color>
+    <color name="gradient_2">#42C2FF</color>
+
 </resources>

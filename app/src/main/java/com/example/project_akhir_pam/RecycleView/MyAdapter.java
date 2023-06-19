@@ -30,6 +30,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     Context context;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private boolean isHome = false;
+
+    public void setFilteredFuncFacts ( List<FuncFact> filteredFuncFacts) {
+        this.funcFacts = filteredFuncFacts;
+        isHome = true;
+        notifyDataSetChanged();
+    }
 
     public MyAdapter(Fragment fragment, List<FuncFact> funcFacts) {
         this.fragment =fragment;
@@ -51,20 +58,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager manager = fragment.requireFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
+                if ( !isHome ){
+                    FragmentManager manager = fragment.requireFragmentManager();
+                    FragmentTransaction transaction = manager.beginTransaction();
 
-                DetailFragment fragment = DetailFragment.newInstance(
-                        data.getTitle(),
-                        data.getDescription(),
-                        data.getPenulis(),
-                        data.getTanggal(),
-                        data.getKey()
-                );
+                    DetailFragment fragment = DetailFragment.newInstance(
+                            data.getTitle(),
+                            data.getDescription(),
+                            data.getTanggal(),
+                            data.getPenulis(),
+                            data.getKey()
+                    );
 
-                transaction.replace(R.id.frameLayout_2, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                    transaction.replace(R.id.frameLayout_2, fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+
             }
         });
 
