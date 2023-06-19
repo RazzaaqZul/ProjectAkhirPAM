@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.project_akhir_pam.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,12 +47,13 @@ public class DetailFragment extends Fragment {
     }
 //  BUATAN SENDIRI ==============================================================================
     private View layout;
-    private String title, description, tanggal, penulis, key;
+    private String title, description, tanggal, penulis, key, avatar;
     private static final String keyTitle = "title";
     private static final String keyDescription = "description";
     private static final String keyTanggal = "tanggal";
     private static final String keyPenulis = "penulis";
     private static final String keyKey = "key";
+    private static final String keyAvatar = "avatar";
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -58,7 +61,7 @@ public class DetailFragment extends Fragment {
 
 
 
-    public static DetailFragment newInstance ( String title, String description, String tanggal, String penulis, String key) {
+    public static DetailFragment newInstance ( String title, String description, String tanggal, String penulis, String key, String avatar) {
         DetailFragment fragment = new DetailFragment();
         Bundle simpan = new Bundle();
         simpan.putString(keyKey, key);
@@ -66,6 +69,7 @@ public class DetailFragment extends Fragment {
         simpan.putString(keyTanggal, tanggal);
         simpan.putString(keyDescription, description);
         simpan.putString(keyTitle, title);
+        simpan.putString(keyAvatar, avatar);
         fragment.setArguments(simpan);
         return fragment;
 
@@ -103,11 +107,13 @@ public class DetailFragment extends Fragment {
             tanggal = getArguments().getString(keyTanggal);
             penulis = getArguments().getString(keyPenulis);
             key = getArguments().getString(keyKey);
+            avatar = getArguments().getString(keyAvatar);
 
         }
     }
 
     TextView tvJudulDetail, tvPenulisDetail, tvTanggalDetail, tvDeskripsiDetail;
+    ImageView ivAvatar;
     Button btnEdit, btnHapus;
 
     @Override
@@ -122,6 +128,12 @@ public class DetailFragment extends Fragment {
         tvPenulisDetail = this.layout.findViewById(R.id.tv_PenulisDetail);
         tvTanggalDetail = this.layout.findViewById(R.id.tv_TanggalDetail);
         tvDeskripsiDetail = this.layout.findViewById(R.id.tv_DeskripsiDetail);
+        ivAvatar = this.layout.findViewById(R.id.iv_avatar);
+        // Menggunakan Glide untuk memuat gambar ke ImageView
+        Glide.with(DetailFragment.this)
+                .load(avatar)
+                .into(ivAvatar);
+
         btnEdit = this.layout.findViewById(R.id.btn_Edit);
         btnHapus = this.layout.findViewById(R.id.btn_Hapus);
 
@@ -146,7 +158,8 @@ public class DetailFragment extends Fragment {
                         tvDeskripsiDetail.getText().toString(),
                         tvTanggalDetail.getText().toString(),
                         tvPenulisDetail.getText().toString(),
-                        key
+                        key,
+                        avatar
                 );
 
                 transaction.replace(R.id.frameLayout_2, fragment);

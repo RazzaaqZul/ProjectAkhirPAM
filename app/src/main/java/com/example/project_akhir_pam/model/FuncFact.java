@@ -2,16 +2,25 @@ package com.example.project_akhir_pam.model;
 
 public class FuncFact {
 
-    private String title, description, penulis, tanggal, key;
+    private String title, description, penulis, tanggal, key, avatar;
     public FuncFact(){
 
     }
 
-    public FuncFact(String title, String description, String penulis, String tanggal) {
+    public FuncFact(String title, String description, String penulis, String tanggal, String avatar) {
         this.title = title;
         this.description = description;
         this.penulis = penulis;
         this.tanggal = tanggal;
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getTitle() {
