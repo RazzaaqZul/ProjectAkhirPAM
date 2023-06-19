@@ -144,8 +144,6 @@ public class HomeFragment extends Fragment {
 //                    Mengambil data dalam bentuk JSON atau objek misal  {description=aldy juga makan ayam, title=Saya Makan Ayam}
                     FuncFact postingan = dataSnapshot.getValue(FuncFact.class);
                     funcFacts.add(postingan);
-                    System.out.println(postingan.getDescription());
-                    System.out.println("INI ADALAH SIZENYA ASLI " + funcFacts.size());
 //                    Mengambil Key dan Menyimpan Key untuk identfikasi Child pada Update dan Delete
                     postingan.setKey(dataSnapshot.getKey());
                     // Membuat thread untuk menampilkan item satu per satu
@@ -167,7 +165,7 @@ public class HomeFragment extends Fragment {
 
                             FuncFact funFact = funcFacts.get(index);
                             filteredFunFact.add(funFact);
-                            System.out.println("MASUK THREAD " + funcFacts.size());
+
 
 
                             try {

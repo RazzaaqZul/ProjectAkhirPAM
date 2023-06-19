@@ -31,16 +31,12 @@
                 android:layout_height="50dp"
                 android:layout_weight="1">
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@color/white" />
+
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/doctor_1" />
+                    android:background="@drawable/pp" />
 
             </FrameLayout>
 

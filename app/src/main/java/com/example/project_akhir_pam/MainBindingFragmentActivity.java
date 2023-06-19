@@ -28,6 +28,7 @@ public class MainBindingFragmentActivity extends AppCompatActivity {
 
         replacedFragment(new HomeFragment());
 
+//        Logic Navbar
         bottomNavigationView.setOnItemSelectedListener(item -> {
 //            home, serach, map, profile
             if ( item.getItemId() == R.id.home) {
@@ -50,6 +51,7 @@ public class MainBindingFragmentActivity extends AppCompatActivity {
 
     }
 
+//    Replaced Fragment untuk mengganti fragment yang ada sesuai dengan navbar yang di klik oleh user
 
     private void replacedFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
