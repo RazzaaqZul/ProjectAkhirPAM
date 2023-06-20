@@ -3,19 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="."
+        android:title="Home"
         android:icon="@drawable/baseline_home_24"
         android:id="@+id/home"/>
     <item
-        android:title="."
+        android:title="Jelajahi"
         android:icon="@drawable/compass"
         android:id="@+id/search"/>
     <item
-        android:title="."
+        android:title="Maps"
         android:icon="@drawable/map"
         android:id="@+id/map"/>
     <item
-        android:title="."
+        android:title="Profile"
         android:icon="@drawable/user"
         android:id="@+id/profile"/>
 </menu>
