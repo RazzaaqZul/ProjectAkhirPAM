@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/bg_card_rs"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_LogoRS"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/logo_rs_1"
+            tools:layout_editor_absoluteY="67dp" />
+
+        <LinearLayout
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_NamaRS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_extrabold"
+                android:text="Nama Rumah Sakit"
+                tools:layout_editor_absoluteX="28dp"
+                tools:layout_editor_absoluteY="253dp" />
+
+            <TextView
+                android:id="@+id/tv_Alamat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="Alamat"
+                tools:layout_editor_absoluteX="38dp"
+                tools:layout_editor_absoluteY="289dp" />
+
+            <TextView
+                android:id="@+id/tv_NomorTelepon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="Nomor Telepon"
+                tools:layout_editor_absoluteX="40dp"
+                tools:layout_editor_absoluteY="320dp" />
+
+            <TextView
+                android:id="@+id/tv_JamBuka"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_semibold"
+                android:text="Jam Buka"
+                tools:layout_editor_absoluteX="45dp"
+                tools:layout_editor_absoluteY="367dp" />
+
+
+        </LinearLayout>
+
+
+        <ImageButton
+            android:id="@+id/ib_Phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/logo_phone"
+            android:background="@drawable/bg_card_rs"
+            tools:layout_editor_absoluteX="20dp"
+            tools:layout_editor_absoluteY="219dp" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

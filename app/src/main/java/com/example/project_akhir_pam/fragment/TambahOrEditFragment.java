@@ -1,25 +1,47 @@
 package com.example.project_akhir_pam.fragment;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.project_akhir_pam.R;
 import com.example.project_akhir_pam.model.FuncFact;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +69,9 @@ public class TambahOrEditFragment extends Fragment {
     private static final String keyTanggal = "tanggal";
     private static final String keyPenulis = "penulis";
     private static final String keyKey = "key";
-    private String title, description, tanggal, penulis, key;
+    private static final String keyAvatar = "avatar";
+
+    private String title, description, tanggal, penulis, key, avatar;
 
     private boolean isEdit = false;
 
@@ -61,7 +85,7 @@ public class TambahOrEditFragment extends Fragment {
     }
 
 
-    public static TambahOrEditFragment newInstance ( String title, String description, String tanggal, String penulis, String key) {
+    public static TambahOrEditFragment newInstance ( String title, String description, String tanggal, String penulis, String key, String avatar) {
         TambahOrEditFragment fragment= new TambahOrEditFragment();
         Bundle simpan = new Bundle();
         simpan.putString(keyKey, key);
@@ -69,6 +93,7 @@ public class TambahOrEditFragment extends Fragment {
         simpan.putString(keyTanggal, tanggal);
         simpan.putString(keyDescription, description);
         simpan.putString(keyTitle, title);
+        simpan.putString(keyAvatar, avatar);
         fragment.setArguments(simpan);
         return fragment;
 
@@ -104,6 +129,7 @@ public class TambahOrEditFragment extends Fragment {
             tanggal = getArguments().getString(keyTanggal);
             penulis = getArguments().getString(keyPenulis);
             key = getArguments().getString(keyKey);
+            avatar = getArguments().getString(keyAvatar);
 
             if (key != null ) {
                 isEdit = true;
@@ -117,7 +143,9 @@ public class TambahOrEditFragment extends Fragment {
     }
 
     EditText etAddTitle, etAddPenulis, etAddTanggalUpload, etAddDeskripsi;
+    ImageButton ibImageUpload;
     Button btnSimpan;
+    ImageView iv_Avatar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -125,11 +153,25 @@ public class TambahOrEditFragment extends Fragment {
         this.layout = inflater.inflate(R.layout.fragment_tambah_or_edit, container, false);
         final View view = inflater.inflate(R.layout.fragment_tambah_or_edit,container,false);
         // Inflate the layout for this fragment
-
         etAddTitle = this.layout.findViewById(R.id.et_AddTitle);
         etAddPenulis = this.layout.findViewById(R.id.et_AddPenulis);
         etAddTanggalUpload = this.layout.findViewById(R.id.et_AddTanggalUpload);
         etAddDeskripsi = this.layout.findViewById(R.id.et_AddDeskripsi);
+        iv_Avatar = this.layout.findViewById(R.id.iv_Avatar);
+        ibImageUpload = this.layout.findViewById(R.id.ib_UploadImage);
+
+        ibImageUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
+
+        // Menggunakan Glide untuk memuat gambar ke ImageView
+        Glide.with(TambahOrEditFragment.this)
+                .load(avatar)
+                .into(iv_Avatar);
+
 
         etAddTitle.setText(title);
         etAddPenulis.setText(penulis);
@@ -140,14 +182,11 @@ public class TambahOrEditFragment extends Fragment {
         btnSimpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( isEdit == false){
-                    tambahData(view);
-                } else if ( isEdit == true ) {
-                    updateData(view);
-                }
+              upload(view);
 
             }
         });
+
 
 
 
@@ -160,13 +199,14 @@ public class TambahOrEditFragment extends Fragment {
 
 
 
-    private void tambahData(View view) {
+    private void tambahData(View view, String avatar) {
         System.out.println("Ini adalah pesan log.");
         String title = etAddTitle.getText().toString();
         String penulis = etAddPenulis.getText().toString();
         String tanggalUpload = etAddTanggalUpload.getText().toString();
         String deskripsi = etAddDeskripsi.getText().toString();
-        FuncFact baru = new FuncFact(title, deskripsi, penulis, tanggalUpload);
+        String avatars = avatar;
+        FuncFact baru = new FuncFact(title, deskripsi, penulis, tanggalUpload, avatars);
         databaseReference.child("dataFunFact").push().setValue(baru).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -185,14 +225,15 @@ public class TambahOrEditFragment extends Fragment {
     }
 
 
-    public  void updateData (View view) {
+    public  void updateData (View view, String avatar) {
         //                Mengambil data/String dari EditText yang telah diisi oleh Constructor sebelumnya
         String title = etAddTitle.getText().toString();
         String penulis = etAddPenulis.getText().toString();
         String tanggalUpload = etAddTanggalUpload.getText().toString();
         String deskripsi = etAddDeskripsi.getText().toString();
+        String avatars = avatar;
         System.out.println("Masuk nih dan Kodenya adalah " + key);
-        FuncFact baru = new FuncFact(title, deskripsi, tanggalUpload, penulis );
+        FuncFact baru = new FuncFact(title, deskripsi, tanggalUpload, penulis , avatars);
         databaseReference.child("dataFunFact").child(key).setValue(baru).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -218,5 +259,99 @@ public class TambahOrEditFragment extends Fragment {
         fragmentTransaction.replace(R.id.frameLayout_2, fragment);
         fragmentTransaction.commit();
     }
+
+
+
+//    Menampilkan Dialog "Take Photo" Mengambil foto secara langsung, ""Choose from Library" mengambil dari galeri
+    public void selectImage() {
+        final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(TambahOrEditFragment.this.getContext());
+        builder.setTitle(getString(R.string.app_name));
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setItems(items, (dialog, item) -> {
+            if(items[item].equals("Take Photo")) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 100);
+            } else if (items[item].equals("Choose from Library")) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 20);
+            } else if (items[item].equals("cancel")) {
+//                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+//    Menerima data dari galery
+//    Menerima data dari gallery, yang pertama di terima adalah URI dan kita ambil pathnya, lalu di decode menjadi bitmap dan ditampilkan ke dalam avatar
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 20 && resultCode == Activity.RESULT_OK && data != null){
+            final Uri path = data.getData();
+            Thread thread = new Thread(() -> {
+                try {
+                    InputStream inputStream = requireActivity().getContentResolver().openInputStream(path);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    iv_Avatar.post(()-> {
+                        iv_Avatar.setImageBitmap(bitmap);
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            });
+            thread.start();
+        }
+    }
+
+
+    public void upload(View view) {
+        iv_Avatar.setDrawingCacheEnabled(true);
+        iv_Avatar.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) iv_Avatar.getDrawable()).getBitmap();
+//        Melakukan Compress Image
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+//        Codingan Upload
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        Menyimpan di folder "images"
+        StorageReference storageReference = storage.getReference("images").child( "IMG" + new Date().getTime()+ ".jpeg");
+        UploadTask uploadTask = storageReference.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                if (taskSnapshot.getMetadata() != null) {
+                    if(taskSnapshot.getMetadata().getReference() != null) {
+                        taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.getResult() != null ){
+//                                    23:00'
+//                                    saveData (email, name, task.getResult().toString());
+                                    if ( isEdit == false){
+                                        tambahData(view, task.getResult().toString());
+                                    } else if ( isEdit == true ) {
+                                        updateData(view, task.getResult().toString());
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+
+    }
+
 
 }
