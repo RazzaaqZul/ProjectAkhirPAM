@@ -98,9 +98,9 @@ public class HomeFragment extends Fragment {
 
 //        Logic Buatan Sendiri
         rumahSakits = new ArrayList<RumahSakit>();
-        rumahSakits.add(new RumahSakit("Rumah Sakit Awal Bros", "Jl. Andong No.3, Jatimulyo", "0812345678", "24 jam" , R.drawable.logo_rs_1));
-        rumahSakits.add(new RumahSakit("Rumah Sakit Brawijaya", "Jl. Soekarno - Hatta, Lowokwaru", "0878132879", "24 jam" , R.drawable.logo_rs_2));
-        rumahSakits.add(new RumahSakit("Rumah Sakit Lavalette", "Jl. W.R. Supratman No.10", "0861528991", "24 jam" , R.drawable.logo_rs_3));
+        rumahSakits.add(new RumahSakit("Rumah Sakit Persada", "KOMPLEKS ARAYA BUSSINESS CENTER, Jl. Raden Panji Suroso KAV.II-IV", "081130588585", "24 jam" , R.drawable.logo_rs_2));
+        rumahSakits.add(new RumahSakit("Rumah Sakit Brawijaya", "Jl. Soekarno - Hatta, Lowokwaru", "0878132879", "24 jam" , R.drawable.logo_rs_3));
+        rumahSakits.add(new RumahSakit("Rumah Sakit Lavalette", "Jl. W.R. Supratman No.10", "0861528991", "24 jam" , R.drawable.logo_rs_1));
 
     }
 
