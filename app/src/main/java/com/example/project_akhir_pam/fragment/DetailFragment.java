@@ -1,7 +1,9 @@
 package com.example.project_akhir_pam.fragment;
 
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,10 +11,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -115,6 +119,7 @@ public class DetailFragment extends Fragment {
     TextView tvJudulDetail, tvPenulisDetail, tvTanggalDetail, tvDeskripsiDetail;
     ImageView ivAvatar;
     Button btnEdit, btnHapus;
+    ImageButton ibDownloadImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,6 +141,7 @@ public class DetailFragment extends Fragment {
 
         btnEdit = this.layout.findViewById(R.id.btn_Edit);
         btnHapus = this.layout.findViewById(R.id.btn_Hapus);
+        ibDownloadImage = this.layout.findViewById(R.id.ib_downloadImage);
 
         tvJudulDetail.setText(title);
         tvPenulisDetail.setText(penulis);
@@ -145,6 +151,10 @@ public class DetailFragment extends Fragment {
         firebaseDatabase= FirebaseDatabase.getInstance("https://pam-project-akhir-default-rtdb.asia-southeast1.firebasedatabase.app/");
         databaseReference = firebaseDatabase.getReference();
 
+
+        System.out.println("INI ADALAH LINK AVATAR");
+        System.out.println(avatar);
+        System.out.println("=======================================");
 
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -201,6 +211,13 @@ public class DetailFragment extends Fragment {
             }
         });
 
+        ibDownloadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadImage();
+            }
+        });
+
 
        return this.layout;
 
@@ -213,7 +230,22 @@ public class DetailFragment extends Fragment {
         fragmentTransaction.replace(R.id.frameLayout_2, fragment);
         fragmentTransaction.commit();
     }
+    private void downloadImage() {
+        DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(getContext().DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(avatar);
 
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(requireContext(), Environment.DIRECTORY_DOWNLOADS, getPathFromUrl(avatar));
+
+        downloadManager.enqueue(request);
+    }
+
+    private String getPathFromUrl(String url) {
+        String[] segments = url.split("/");
+        return segments[segments.length - 1];
+    }
 
 
 }
