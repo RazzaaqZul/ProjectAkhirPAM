@@ -36,12 +36,13 @@
         android:id="@+id/tv_PenulisDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/nunito_medium"
         android:text="Nama Penulis"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/iv_avatar"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
 
     <TextView
@@ -62,16 +63,15 @@
         android:id="@+id/tv_DeskripsiDetail"
         android:layout_width="357dp"
         android:layout_height="334dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/nunito_medium"
         android:text="(DESKRIPSI) Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea."
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_Edit"
-        app:layout_constraintEnd_toEndOf="@+id/iv_avatar"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="@+id/iv_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/tv_TanggalDetail" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_PenulisDetail"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -134,20 +134,32 @@
         app:srcCompat="@drawable/menu" />
 
     <!--    <ImageView-->
-<!--        android:id="@+id/iv_Edit"-->
-<!--        android:layout_width="25dp"-->
-<!--        android:layout_height="25dp"-->
-<!--        android:layout_marginEnd="12dp"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/btn_Hapus"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/imageView6"-->
-<!--        app:srcCompat="@drawable/edit" />-->
+    <!--        android:id="@+id/iv_Edit"-->
+    <!--        android:layout_width="25dp"-->
+    <!--        android:layout_height="25dp"-->
+    <!--        android:layout_marginEnd="12dp"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/btn_Hapus"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/imageView6"-->
+    <!--        app:srcCompat="@drawable/edit" />-->
 
-<!--    <ImageView-->
-<!--        android:id="@+id/iv_Hapus"-->
-<!--        android:layout_width="25dp"-->
-<!--        android:layout_height="25dp"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/iv_avatar"-->
-<!--        app:srcCompat="@drawable/junk"-->
-<!--        tools:layout_editor_absoluteY="24dp" />-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/iv_Hapus"-->
+    <!--        android:layout_width="25dp"-->
+    <!--        android:layout_height="25dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/iv_avatar"-->
+    <!--        app:srcCompat="@drawable/junk"-->
+    <!--        tools:layout_editor_absoluteY="24dp" />-->
+    <ImageButton
+        android:id="@+id/ib_downloadImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_download_button"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+        app:layout_constraintEnd_toEndOf="@+id/iv_avatar"
+        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintStart_toStartOf="@+id/iv_avatar"
+        app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+        app:layout_constraintVertical_bias="0.946"
+        app:srcCompat="@drawable/baseline_download_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

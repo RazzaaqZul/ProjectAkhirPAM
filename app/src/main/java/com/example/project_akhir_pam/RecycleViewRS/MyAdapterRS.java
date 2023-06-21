@@ -41,6 +41,7 @@ public class MyAdapterRS extends RecyclerView.Adapter<MyViewHolderRS>{
         holder.tvAlamat.setText(data.getAlamat());
         holder.tvNomorTelepon.setText(data.getNoTeleponRS());
         holder.ivLogoRS.setImageResource(data.getLogoRS());
+        holder.tvJamBuka.setText(data.getJamBuka());
         holder.ibPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
