@@ -233,7 +233,7 @@ public class TambahOrEditFragment extends Fragment {
         String deskripsi = etAddDeskripsi.getText().toString();
         String avatars = avatar;
         System.out.println("Masuk nih dan Kodenya adalah " + key);
-        FuncFact baru = new FuncFact(title, deskripsi, tanggalUpload, penulis , avatars);
+        FuncFact baru = new FuncFact(title, deskripsi,  penulis , tanggalUpload, avatars);
         databaseReference.child("dataFunFact").child(key).setValue(baru).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

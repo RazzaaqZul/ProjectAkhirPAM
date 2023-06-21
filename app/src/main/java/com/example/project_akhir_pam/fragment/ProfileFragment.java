@@ -148,12 +148,6 @@ public class ProfileFragment extends Fragment {
 
 
 
-    private void replacedFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout_profile, fragment);
-        fragmentTransaction.commit();
-    }
 
 
     private void tampilData() {
