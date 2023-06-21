@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/nunito_extrabold"
-        android:text="Edukasi Kesahatan"
+        android:text="Artikel Edukasi Kesahatan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.073"
         app:layout_constraintStart_toStartOf="parent"

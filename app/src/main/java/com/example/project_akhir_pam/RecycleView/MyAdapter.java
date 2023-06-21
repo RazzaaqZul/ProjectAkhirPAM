@@ -2,7 +2,9 @@ package com.example.project_akhir_pam.RecycleView;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +96,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                     transaction.replace(R.id.frameLayout_2, fragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
+                } else {
+                    String url = data.getPenulis();
+
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    fragment.startActivity(intent);
                 }
 
             }

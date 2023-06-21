@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,12 @@ import android.widget.TextView;
 import com.example.project_akhir_pam.R;
 import com.example.project_akhir_pam.RecycleView.MyAdapter;
 import com.example.project_akhir_pam.RecycleViewRS.MyAdapterRS;
+import com.example.project_akhir_pam.api.ApiConfig;
 import com.example.project_akhir_pam.model.FuncFact;
 import com.example.project_akhir_pam.model.InformasiUser;
 import com.example.project_akhir_pam.model.RumahSakit;
+import com.example.project_akhir_pam.modelAPI.BeritaKesahatan;
+import com.example.project_akhir_pam.modelAPI.BeritaKesehatanResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +34,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +62,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView tv_tampil, tv_tampilRS;
     ArrayList<FuncFact> funcFacts;
+    List<BeritaKesahatan> listBeritaKesahatan;
     ArrayList<RumahSakit> rumahSakits;
     private FirebaseAuth mAuth;
 
@@ -96,6 +106,7 @@ public class HomeFragment extends Fragment {
 
 
 
+
 //        Logic Buatan Sendiri
         rumahSakits = new ArrayList<RumahSakit>();
         rumahSakits.add(new RumahSakit("Rumah Sakit Awal Bros", "Jl. Andong No.3, Jatimulyo", "0812345678", "24 jam" , R.drawable.logo_rs_1));
@@ -124,83 +135,16 @@ public class HomeFragment extends Fragment {
         funcFacts = new ArrayList<FuncFact>();
 
 //        Jalankan Fungsi
-        tampilData();
+//        tampilData();
         ambilUsername();
+        tampilkanDataBeritaKesehatan();
+
         return this.layout;
     }
 
 
-    private void tampilData() {
-        firebaseDatabase = FirebaseDatabase.getInstance("https://pam-project-akhir-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        databaseReference = firebaseDatabase.getReference("dataFunFact");
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-//                Menghapus list lama dan menggantikan ke data baru setelah di looping (for)
-//                funcFacts.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    Mengambil data dalam bentuk JSON atau objek misal  {description=aldy juga makan ayam, title=Saya Makan Ayam}
-                    FuncFact postingan = dataSnapshot.getValue(FuncFact.class);
-                    funcFacts.add(postingan);
-//                    Mengambil Key dan Menyimpan Key untuk identfikasi Child pada Update dan Delete
-                    postingan.setKey(dataSnapshot.getKey());
-                    // Membuat thread untuk menampilkan item satu per satu
-
-                }
-                Handler handler = new Handler();
-
-                // Membuat thread untuk menampilkan item satu per satu
-                Thread thread = new Thread(new Runnable() {
-                    int index = 0;
-
-                    @Override
-                    public void run() {
-                        while (index < funcFacts.size()) {
-                            ArrayList<FuncFact> filteredFunFact;
-                            filteredFunFact = new ArrayList<FuncFact>();
-
-                            filteredFunFact.clear();
-
-                            FuncFact funFact = funcFacts.get(index);
-                            filteredFunFact.add(funFact);
 
 
-
-                            try {
-                                handler.post(() -> {
-                                    // Kode disini, berjalan di UI thread
-                                    // <1>
-                                    MyAdapter adapter = new MyAdapter(HomeFragment.this, filteredFunFact);
-                                    tv_tampil.setLayoutManager(new LinearLayoutManager(HomeFragment.this.getContext()));
-                                    adapter.setFilteredFuncFacts(filteredFunFact);
-                                    tv_tampil.setAdapter(adapter);
-
-                                });
-                                // Sleep akan mengatur setiap detik iv berubah
-                                sleep(3000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            index++;
-                            if (index >= funcFacts.size()) {
-                                index = 0; // Mengulangi dari awal jika sudah mencapai akhir ArrayList
-                            }
-                        }
-                    }
-                });
-                thread.start();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
 
 
     private void ambilUsername() {
@@ -231,10 +175,87 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void tampilkanDataBeritaKesehatan() {
+        Call<BeritaKesehatanResponse> req = ApiConfig.getApiService().getNews();
+        req.enqueue(new Callback<BeritaKesehatanResponse>() {
+            @Override
+            public void onResponse(Call<BeritaKesehatanResponse> call, Response<BeritaKesehatanResponse> response) {
+                if (response.isSuccessful()){
+                    if (response.body() != null){
+                        listBeritaKesahatan = response.body().getArticles();
 
+                        System.out.println("BERHASILL");
+                        System.out.println(listBeritaKesahatan.get(1).getAuthor());
+//                        adapterNews = new NewsAdapter(newsList);
+//                        binding.newsRv.setAdapter(adapterNews);
+                    }
+                }
+                menampilkanDataBeritaSatuPerSatu();
 
+                System.out.println("THREAD DIJALANKAN");
+
+            }
+            @Override
+            public void onFailure(Call<BeritaKesehatanResponse> call, Throwable t) {
+                System.out.println("GAGALL");
+                System.out.println(call);
+            }
+ });
 
     }
+
+
+    public void menampilkanDataBeritaSatuPerSatu () {
+
+        Handler handler = new Handler();
+
+        // Membuat thread untuk menampilkan item satu per satu
+        Thread threads = new Thread(new Runnable() {
+            int index = 0;
+            @Override
+            public void run() {
+                System.out.println("SIZE NYA KOSONG MAS BRO");
+                System.out.println(listBeritaKesahatan.size());
+                while (index < listBeritaKesahatan.size()) {
+                    System.out.println("THREAD BERHASIL MASUK");
+                    ArrayList<FuncFact> filteredFunFact;
+                    filteredFunFact = new ArrayList<FuncFact>();
+//                            filteredFunFact.clear();
+//                            FuncFact funFact = uncFactfs.get(index);
+//                            filteredFunFact.add(funFact);
+
+                    filteredFunFact.add(new FuncFact(listBeritaKesahatan.get(index).getTitle(), listBeritaKesahatan.get(index).getPublishedAt().substring(0,10),listBeritaKesahatan.get(index).getUrl(), "empty", "empty"));
+
+                    try {
+                        handler.post(() -> {
+                            // Kode disini, berjalan di UI thread
+                            // <1>
+                            MyAdapter adapter = new MyAdapter(HomeFragment.this, filteredFunFact);
+                            tv_tampil.setLayoutManager(new LinearLayoutManager(HomeFragment.this.getContext()));
+                            adapter.setFilteredFuncFacts(filteredFunFact);
+                            tv_tampil.setAdapter(adapter);
+
+                        });
+                        // Sleep akan mengatur setiap detik iv berubah
+                        sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        System.out.println("error : " );
+                    }
+
+                    index++;
+                    if (index >= listBeritaKesahatan.size()) {
+                        index = 0; // Mengulangi dari awal jika sudah mencapai akhir ArrayList
+                    }
+                }
+            }
+        });
+        threads.start();
+    }
+
+
+
+}
 
 
 
