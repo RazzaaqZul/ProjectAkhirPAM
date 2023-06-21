@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.example.project_akhir_pam.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -51,6 +52,7 @@ public class DetailFragment extends Fragment {
     }
 //  BUATAN SENDIRI ==============================================================================
     private View layout;
+    private FirebaseAuth mAuth;
     private String title, description, tanggal, penulis, key, avatar;
     private static final String keyTitle = "title";
     private static final String keyDescription = "description";
@@ -119,7 +121,7 @@ public class DetailFragment extends Fragment {
     TextView tvJudulDetail, tvPenulisDetail, tvTanggalDetail, tvDeskripsiDetail;
     ImageView ivAvatar;
     Button btnEdit, btnHapus;
-    ImageButton ibDownloadImage;
+    ImageButton ibDownloadImage, ibButton_back;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -133,7 +135,7 @@ public class DetailFragment extends Fragment {
         tvPenulisDetail = this.layout.findViewById(R.id.tv_PenulisDetail);
         tvTanggalDetail = this.layout.findViewById(R.id.tv_TanggalDetail);
         tvDeskripsiDetail = this.layout.findViewById(R.id.tv_DeskripsiDetail);
-        ivAvatar = this.layout.findViewById(R.id.iv_avatar);
+        ivAvatar = this.layout.findViewById(R.id.ib_button_back_profile);
         // Menggunakan Glide untuk memuat gambar ke ImageView
         Glide.with(DetailFragment.this)
                 .load(avatar)
@@ -142,6 +144,7 @@ public class DetailFragment extends Fragment {
         btnEdit = this.layout.findViewById(R.id.btn_Edit);
         btnHapus = this.layout.findViewById(R.id.btn_Hapus);
         ibDownloadImage = this.layout.findViewById(R.id.ib_downloadImage);
+        ibButton_back = this.layout.findViewById(R.id.ib_button_back);
 
         tvJudulDetail.setText(title);
         tvPenulisDetail.setText(penulis);
@@ -218,6 +221,22 @@ public class DetailFragment extends Fragment {
             }
         });
 
+        ibButton_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JelajahiFragment fragment = new JelajahiFragment();
+                replacedFragment(fragment);
+            }
+        });
+//        Cek Admin
+        mAuth = FirebaseAuth.getInstance();
+        if ( mAuth.getUid().equals("bPRlbRpOVmYWFCmt2heWMArKIal2")) {
+            btnEdit.setVisibility(View.VISIBLE);
+            btnHapus.setVisibility(View.VISIBLE);
+        } else {
+            btnEdit.setVisibility(View.INVISIBLE);
+            btnHapus.setVisibility(View.INVISIBLE);
+        }
 
        return this.layout;
 

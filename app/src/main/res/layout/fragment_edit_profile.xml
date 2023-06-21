@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
+        app:layout_constraintTop_toBottomOf="@+id/ib_button_back_profile" />
 
     <EditText
         android:id="@+id/et_UsernameProfile"
@@ -89,10 +89,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_NomorTeleponProfile" />
 
-    <ImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/ib_button_back_profile"
+        android:layout_width="17dp"
+        android:layout_height="22dp"
         android:layout_marginStart="46dp"
         android:layout_marginTop="28dp"
         android:src="@drawable/back"
@@ -107,7 +107,7 @@
         android:text="Nama"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/iv_avatar"
+        app:layout_constraintStart_toStartOf="@+id/ib_button_back_profile"
         app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
     <TextView

@@ -59,7 +59,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final FuncFact data = funcFacts.get(position);
-        holder.tvDisplayDeskripsi.setText(data.getDescription());
+        holder.tvDisplayDeskripsi.setText(ubahString(data.getDescription()));
         holder.tvDisplayJudul.setText(data.getTitle());
         Glide.with(fragment)
                 .load(data.getAvatar())
@@ -113,5 +113,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public int getItemCount() {
         return funcFacts.size();
+    }
+
+    public String ubahString(String input) {
+        if (input.length() > 70) {
+            String substring = input.substring(0, 70);
+            return substring + " . . . ";
+        }
+        return input;
     }
 }

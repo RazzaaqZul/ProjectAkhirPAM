@@ -29,7 +29,7 @@ public class DashboardActivty extends AppCompatActivity {
 //        btnLogout.setOnClickListener(this);
 //
 ////       Cek Admin
-//        if ( mAuth.getUid().equals("FMWTO2sEUsWeBnePvkMqSGfsGPE2")) {
+//        if ( mAuth.getUid().equals("bPRlbRpOVmYWFCmt2heWMArKIal2")) {
 //            btnSubmit.setVisibility(View.VISIBLE);
 //        } else {
 //            btnSubmit.setVisibility(View.INVISIBLE);

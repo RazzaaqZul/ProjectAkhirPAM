@@ -2,6 +2,7 @@ package com.example.project_akhir_pam.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -74,6 +75,9 @@ public class TambahOrEditFragment extends Fragment {
     private String title, description, tanggal, penulis, key, avatar;
 
     private boolean isEdit = false;
+
+
+    private ProgressDialog progressDialog;
 
 
 
@@ -189,9 +193,13 @@ public class TambahOrEditFragment extends Fragment {
 
 
 
-
+//      Membuat Firebase dan instansiasi
         firebaseDatabase= FirebaseDatabase.getInstance("https://pam-project-akhir-default-rtdb.asia-southeast1.firebasedatabase.app/");
         databaseReference = firebaseDatabase.getReference();
+
+//      Membuat Loading
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Ditunggu ya gais ... ");
 
 
         return this.layout;
@@ -309,6 +317,7 @@ public class TambahOrEditFragment extends Fragment {
 
 
     public void upload(View view) {
+        progressDialog.show();
         iv_Avatar.setDrawingCacheEnabled(true);
         iv_Avatar.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) iv_Avatar.getDrawable()).getBitmap();

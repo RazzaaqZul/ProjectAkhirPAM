@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import com.example.project_akhir_pam.model.FuncFact;
 import com.example.project_akhir_pam.R;
 import com.example.project_akhir_pam.RecycleView.MyAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,7 +49,7 @@ public class JelajahiFragment extends Fragment implements View.OnClickListener {
     ArrayList<FuncFact> funcFacts;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-
+    private FirebaseAuth mAuth;
     ImageView btnTambah;
 
 
@@ -94,28 +95,22 @@ public class JelajahiFragment extends Fragment implements View.OnClickListener {
 
         tv_tampil = this.layout.findViewById(R.id.recyclerview);
         funcFacts = new ArrayList<FuncFact>();
-
-//        MyAdapter adapter = new MyAdapter(JelajahiFragment.this, funcFacts);
-//        tv_tampil.setLayoutManager(new LinearLayoutManager(JelajahiFragment.this.getContext()));
-//        tv_tampil.setAdapter(adapter);
-//
-//
-//        funcFacts.add( new FuncFact("Kenali Penyakit Arrhythmia", "Detak jantung yang tidak normal, apakah tidak beraturan, terlalu cepat, atau terlalu lambat. ...", "Anas Al Halimi","19 September 2023"));
-//        funcFacts.add( new FuncFact("ayam", "makan", "nasi","ikan"));
-//        funcFacts.add( new FuncFact("ayam", "makan", "nasi","ikan"));
-//        funcFacts.add( new FuncFact("ayam", "makan", "nasi","ikan"));
+//        Menampilkan data Funfact dengan RecycleView
         tampilData();
 
 //        Menambah Button untuk menambahkan Item
         btnTambah = this.layout.findViewById(R.id.btn_TambahOrEdit);
-
         btnTambah.setOnClickListener(this);
 
+//        Cek Admin
+        mAuth = FirebaseAuth.getInstance();
+        if ( mAuth.getUid().equals("bPRlbRpOVmYWFCmt2heWMArKIal2")) {
+            btnTambah.setVisibility(View.VISIBLE);
+        } else {
+            btnTambah.setVisibility(View.INVISIBLE);
+        }
+
         return this.layout;
-
-//        Buatan Sendiri
-
-
     }
 
     //    BUATAN SENDIRI ==================================

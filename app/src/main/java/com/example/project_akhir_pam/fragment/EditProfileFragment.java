@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.project_akhir_pam.R;
@@ -113,6 +114,7 @@ public class EditProfileFragment extends Fragment {
 
     EditText etUsernameProfile, etCityProfile, etNomorTeleponProfile;
     Button btnSaveProfile;
+    ImageButton ibButton_back_profile;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -131,6 +133,14 @@ public class EditProfileFragment extends Fragment {
         databaseReference = firebaseDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
 
+        ibButton_back_profile = this.layout.findViewById(R.id.ib_button_back_profile);
+        ibButton_back_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileFragment fragment = new ProfileFragment();
+                replacedFragment(fragment);
+            }
+        });
 
         btnSaveProfile = this.layout.findViewById(R.id.btn_SaveProfile);
         btnSaveProfile.setOnClickListener(new View.OnClickListener() {
